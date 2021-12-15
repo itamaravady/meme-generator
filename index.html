@@ -9,18 +9,24 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body>
+<body onload="init()">
 
     <section class="gallery">
-
-
+        <section class="images-container grid"></section>
     </section>
 
     <section class="editor">
-
-
+        <section class="editor-controls">
+            <input type="text" name="txt" onChange="onSetMemeContent(this)">
+        </section>
+        <div class="canvas-container">
+            <canvas width="500" height="500" style="cursor: crosshair"></canvas>
+        </div>
     </section>
 
+    <script src="js/services/memeService.js"></script>
+    <script src="js/controllers/galleryController.js"></script>
+    <script src="js/controllers/memeController.js"></script>
     <script src="js/main.js"></script>
 </body>
 
