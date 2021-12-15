@@ -8,6 +8,7 @@
 body {
     margin: 0;
     background-color: #22252e;
+
 }
 
 @font-face {
@@ -24,7 +25,7 @@ header {
     height: 70px;
     max-width: 1370px;
     margin: 10px auto;
-    font-family: "poppins";
+    font-family: 'poppins';
     font-size: 1.2rem;
 }
 
@@ -84,12 +85,9 @@ header ul li:last-child {
 
 .grid-text-controls {
     display: grid;
-    grid-template-columns: repeat(5, 80px);
-    grid-template-rows: repeat(2, 80px);
-    gap: 10px 50px;
-    /* width: 100%; */
-    /* margin: auto; */
-    /* margin: 40px; */
+    grid-template-columns: repeat(5, 50px);
+    grid-template-rows: repeat(2, 50px);
+    gap: 10px 30px;
 }
 
 .text-controls .font-style {
@@ -98,31 +96,60 @@ header ul li:last-child {
 
 .editor-container {
     display: none;
+    height: 770px;
+    /* background-color: orangered; */
 }
 
 .editor {
     /* background-color: aqua; */
-    height: 80vh;
-    width: 80vw;
-    margin: 10vh auto;
+    margin: 2vh auto;
+    max-width: 1350px;
+    height: 100%;
+}
+
+.editor-controls {
+    border-radius: 2em;
+}
+
+.move-line {
+    background-image: url(../img/icons/up-and-down-arrows.png);
+    /* padding: 2rem; */
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 50px;
+    width: 50px;
+    border: none;
+    object-fit: contain;
+}
+
+.editor-controls input[name="txt"] {
+    display: block;
+    width: 100%;
+    height: 3rem;
+    border: none;
+    border-radius: 3em;
+    text-align: center;
+    font-size: 1.4rem;
+    color: #3d3d3d;
+    font-family: 'poppins';
 }
 
 canvas {
     display: block;
-    margin: 0 auto;
-    background-color: #fff;
 }
 
 .canvas-container {
-    width: 700px;
-    height: 700px;
-    background-color: brown;
+    width: 600px;
+    height: 600px;
+    background-color: orangered;
 }
 
 .editor-controls {
-    width: 700px;
-    height: 700px;
-    background-color: coral;
+    background-color: rgb(56, 59, 66);
+    padding: 25px;
+    width: 600px;
+    height: 600px;
 }
 
 /* main */
@@ -146,6 +173,10 @@ canvas {
 
 .space-around {
     justify-content: space-around;
+}
+
+.space-evenly {
+    justify-content: space-evenly;
 }
 
 .center-items {
