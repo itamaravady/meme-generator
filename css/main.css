@@ -1,38 +1,157 @@
+/* general */
+
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background-color: rgb(239, 242, 251);
+    background-color: #22252e;
 }
 
+@font-face {
+    font-family: "poppins";
+    src: url(../fonts/Poppins-Medium.ttf)
+}
+
+
+
 /* gallery */
+header {
+    background: linear-gradient(90deg, #139bb1 0%, #2cbc74 100%);
+    border-radius: 3em;
+    height: 70px;
+    max-width: 1370px;
+    margin: 10px auto;
+    font-family: "poppins";
+    font-size: 1.2rem;
+}
+
+header ul {
+    gap: 20px;
+}
+
+header ul li:last-child {
+    margin-inline-end: 70px;
+}
+
+.logo {
+    color: white;
+    text-transform: uppercase;
+
+    margin-inline-start: 70px;
+    line-height: 3.5em;
+}
+
+.main-layout {
+    max-width: 1350px;
+    margin: 10px auto;
+}
+
+.gallery {
+    /* max-width: 1170px; */
+    background-color: #383b44;
+    border-radius: 0.4rem;
+    padding: 40px 50px 50px 40px;
+    display: none;
+}
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 100px);
-    gap: 5px;
+    grid-template-columns: repeat(auto-fill, 200px);
+    grid-auto-rows: 180px;
+    gap: 30px;
 }
 
 .images-container .image img {
+
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 3px 0px #0000006b;
 }
 
-.images-container .image {
-    width: 100px;
-    height: 100px;
+.images-container {
+    justify-content: center;
+    /* background-color: orangered; */
 }
 
 
 
 /* canvas */
 
+.grid-text-controls {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    grid-template-rows: repeat(2, 80px);
+    gap: 10px 50px;
+    /* width: 100%; */
+    /* margin: auto; */
+    /* margin: 40px; */
+}
+
+.text-controls .font-style {
+    grid-column: span 3;
+}
+
+.editor-container {
+    display: none;
+}
+
+.editor {
+    /* background-color: aqua; */
+    height: 80vh;
+    width: 80vw;
+    margin: 10vh auto;
+}
 
 canvas {
     display: block;
     margin: 0 auto;
     background-color: #fff;
+}
+
+.canvas-container {
+    width: 700px;
+    height: 700px;
+    background-color: brown;
+}
+
+.editor-controls {
+    width: 700px;
+    height: 700px;
+    background-color: coral;
+}
+
+/* main */
+
+
+
+.open {
+    display: block;
+}
+
+/* helpers */
+
+
+.flex {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.center-items {
+    align-items: center;
+}
+
+.clean-list {
+    list-style: none;
 }

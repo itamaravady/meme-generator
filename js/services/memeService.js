@@ -5,6 +5,25 @@ var gNextId = 100;
 const gImgs = [
     { id: gNextId++, url: 'img/6.jpg', keywords: ['funny', 'political'] },
     { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
+    { id: gNextId++, url: 'img/10.jpg', keywords: ['funny', 'political'] },
 ];
 
 const gMeme = {
@@ -13,28 +32,29 @@ const gMeme = {
     selectedLineIdx: 0,
     lines: [
         {
-            txt: 'I sometimes eat bleech',
-            size: 50,
-            lineWidth: 5,
-            font: 'Impact',
+            txt: 'Let the fun begin',
+            position: { x: 50, y: 80 },
+            size: 80,
+            lineWidth: 2,
+            font: 'impact',
             align: 'left',
-            fill: 'white',
-            stroke: 'black'
-
+            fill: '#FFFFFF',
+            stroke: '#000000',
+        },
+        {
+            txt: 'or dont...',
+            position: { x: 50, y: 650 },
+            size: 80,
+            lineWidth: 2,
+            font: 'poppins',
+            align: 'left',
+            fill: '#FFFFFF',
+            stroke: '#000000',
         },
     ],
 
 }
-//canvas
 
-const gCanvas = {
-    width: 500,
-    height: 500,
-}
-
-function getCanvas() {
-    return gCanvas;
-}
 
 
 //meme
@@ -44,7 +64,7 @@ function getMeme() {
 }
 
 function getMemeLineIdx() {
-    return 0;
+    return gMeme.selectedLineIdx;
 }
 
 
@@ -54,6 +74,10 @@ function getMemeLineIdx() {
 
 function getImgs() {
     return gImgs;
+}
+
+function setImg(imgId) {
+    gMeme.selectedImgId = imgId;
 }
 
 
@@ -71,8 +95,19 @@ function _getImgById(id) {
 
 //txt
 
+function removeLine() {
+    const lineIdx = getMemeLineIdx();
+    gMeme.lines.splice(lineIdx, 1)
+}
+
 function setMemeContent(inputName, inputValue) {
     const memeLineIdx = getMemeLineIdx();
     gMeme.lines[memeLineIdx][inputName] = inputValue;
-    console.log(gMeme.lines[memeLineIdx][inputName]);
+}
+
+
+function setLineFontSize(inputValue) {
+    const memeLineIdx = getMemeLineIdx();
+    gMeme.lines[memeLineIdx].size += +inputValue;
+    console.log(inputValue);
 }

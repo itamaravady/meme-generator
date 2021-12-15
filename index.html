@@ -10,19 +10,50 @@
 </head>
 
 <body onload="init()">
-
-    <section class="gallery">
+    <header class="flex space-between">
+        <div class="logo">MEME Generator</div>
+        <ul class="flex space-between clean-list">
+            <li onclick="goToGallery()">Gallery</li>
+            <li>about</li>
+        </ul>
+    </header>
+    <section class="gallery main-layout open">
         <section class="images-container grid"></section>
     </section>
+    <div class="editor-container">
+        <section class="editor flex space-around center-items">
+            <div class="canvas-container">
+                <canvas width="500" height="500"></canvas>
+            </div>
+            <section class="editor-controls">
+                <input type="text" name="txt" onChange="onSetMemeContent(this)">
 
-    <section class="editor">
-        <section class="editor-controls">
-            <input type="text" name="txt" onChange="onSetMemeContent(this)">
+                <section class="line-controls">
+                    <button class="move-line" onclick="onChangeLine()">move line</button>
+                    <button class="add-line">addline</button>
+                    <button class="delete-line" onclick="onRemoveLine()">delete line</button>
+                </section>
+
+                <section class="text-controls grid-text-controls">
+                    <button name="size" value="2" class="increase-font-weight"
+                        onclick="onSetLineFontSize(this)">A+</button>
+                    <button name="size" value="-2" class="decrease-font-weight"
+                        onclick="onSetLineFontSize(this)">A-</button>
+                    <button class="align-left">AL</button>
+                    <button class="align-center">AC</button>
+                    <button class="align-right">AR</button>
+                    <select name="font" class="font-style" onchange="onSetMemeContent(this)">
+                        <option value="impact">IMPACT</option>
+                        <option value="poppins">poppins</option>
+                    </select>
+                    <input name="stroke" type="color" onchange="onSetMemeContent(this)">
+                    <input name="fill" type="color" onchange="onSetMemeContent(this)">
+
+                </section>
+
+            </section>
         </section>
-        <div class="canvas-container">
-            <canvas width="500" height="500" style="cursor: crosshair"></canvas>
-        </div>
-    </section>
+    </div>
 
     <script src="js/services/memeService.js"></script>
     <script src="js/controllers/galleryController.js"></script>

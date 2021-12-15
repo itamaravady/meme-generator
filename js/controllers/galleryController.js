@@ -6,17 +6,28 @@ function initGalleryController() {
 
 
 function renderGallery() {
-    const imgs = onGetImgs();
+    const imgs = getImgs();
     const strHtmls = imgs.map((img) => {
         return `
         <div class="image">
-            <img src="${img.url}">
+            <img src="${img.url}" onclick="onImgSelect(${img.id})">
         </div> 
         `
     })
     document.querySelector('.images-container').innerHTML = strHtmls.join('')
 }
 
-function onGetImgs() {
-    return getImgs();
+function onImgSelect(imgId) {
+    // console.log('image selected id:', imgId);
+    setImg(imgId);
+    goToEditor()
 }
+
+function goToEditor() {
+    initMemeController();
+    hideSection('gallery');
+    showSection('editor-container');
+    // document.querySelector('.editor').classList.add('flex');
+}
+
+
