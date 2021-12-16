@@ -13,8 +13,8 @@
     <header class="flex space-between">
         <div class="logo">MEME Generator</div>
         <ul class="flex space-between clean-list">
-            <li onclick="goToGallery()">Gallery</li>
-            <li>about</li>
+            <li onclick="goToGallery()" class="btn">Gallery</li>
+            <li class="btn">about</li>
         </ul>
     </header>
     <section class="gallery main-layout open">
@@ -29,25 +29,25 @@
                 <input type="text" name="txt" onChange="onSetMemeContent(this)">
 
                 <section class="line-controls">
-                    <button class="move-line" onclick="onChangeLine()"></button>
-                    <button class="add-line">addline</button>
-                    <button class="delete-line" onclick="onRemoveLine()">delete line</button>
+                    <button class=" btn btn-text move-line" onclick="onSetCurrLine()"></button>
+                    <button class="btn btn-text add-line" onclick="onAddLine()"></button>
+                    <button class="btn btn-text delete-line" onclick="onRemoveLine()"></button>
                 </section>
 
                 <section class="text-controls grid-text-controls">
-                    <button name="size" value="2" class="increase-font-weight"
-                        onclick="onSetLineFontSize(this)">A+</button>
-                    <button name="size" value="-2" class="decrease-font-weight"
-                        onclick="onSetLineFontSize(this)">A-</button>
-                    <button class="align-left">AL</button>
-                    <button class="align-center">AC</button>
-                    <button class="align-right">AR</button>
+                    <button name="size" value="2" class="btn btn-text increase-font-weight"
+                        onclick="onSetLineFontSize(this)"></button>
+                    <button name="size" value="-2" class="btn btn-text decrease-font-weight"
+                        onclick="onSetLineFontSize(this)"></button>
+                    <button class="btn btn-text align-left" onclick="onAlignLine('left')"></button>
+                    <button class="btn btn-text align-center" onclick="onAlignLine('center')"></button>
+                    <button class="btn btn-text align-right" onclick="onAlignLine('right')"></button>
                     <select name="font" class="font-style" onchange="onSetMemeContent(this)">
                         <option value="impact">IMPACT</option>
                         <option value="poppins">poppins</option>
                     </select>
-                    <input name="stroke" type="color" onchange="onSetMemeContent(this)">
-                    <input name="fill" type="color" onchange="onSetMemeContent(this)">
+                    <input class="btn btn-text stroke" name="stroke" type="color" onchange="onSetMemeContent(this)">
+                    <input class="btn btn-text fill" name="fill" type="color" onchange="onSetMemeContent(this)">
 
                 </section>
 

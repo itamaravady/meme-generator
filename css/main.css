@@ -5,17 +5,21 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "poppins";
+    src: url(../fonts/Poppins-Medium.ttf)
+}
+
+
 body {
     margin: 0;
     background-color: #22252e;
 
 }
 
-@font-face {
-    font-family: "poppins";
-    src: url(../fonts/Poppins-Medium.ttf)
+button, .btn {
+    cursor: pointer;
 }
-
 
 
 /* gallery */
@@ -76,7 +80,6 @@ header ul li:last-child {
 
 .images-container {
     justify-content: center;
-    /* background-color: orangered; */
 }
 
 
@@ -85,9 +88,10 @@ header ul li:last-child {
 
 .grid-text-controls {
     display: grid;
-    grid-template-columns: repeat(5, 50px);
-    grid-template-rows: repeat(2, 50px);
-    gap: 10px 30px;
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(2, 60px);
+    gap: 15px;
+    justify-content: space-between;
 }
 
 .text-controls .font-style {
@@ -97,7 +101,6 @@ header ul li:last-child {
 .editor-container {
     display: none;
     height: 770px;
-    /* background-color: orangered; */
 }
 
 .editor {
@@ -108,32 +111,117 @@ header ul li:last-child {
 }
 
 .editor-controls {
+    background-color: rgb(56, 59, 66);
+    padding: 25px;
+    width: 600px;
+    height: 600px;
     border-radius: 2em;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
-.move-line {
-    background-image: url(../img/icons/up-and-down-arrows.png);
-    /* padding: 2rem; */
-    background-size: 80%;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 50px;
-    width: 50px;
-    border: none;
-    object-fit: contain;
+.editor-controls .btn, .editor-controls select, .editor-controls input {
+    /* box-shadow: inset 0 4px 0px #ffffff94; */
+    box-shadow: inset 0 -4px 0px #00000094;
 }
 
 .editor-controls input[name="txt"] {
     display: block;
     width: 100%;
-    height: 3rem;
+    height: 4rem;
     border: none;
     border-radius: 3em;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: #3d3d3d;
     font-family: 'poppins';
+    margin-bottom: 15px;
 }
+
+.line-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+
+}
+
+.line-controls>* {
+    margin-inline-end: 25px;
+    border-radius: 0.6rem;
+}
+
+.text-controls>* {
+    border-radius: 0.6rem;
+
+}
+
+.text-controls {
+    margin-bottom: 25px;
+    background-color: #19a59f;
+    padding: 10px;
+    border-radius: 0.8rem;
+}
+
+
+.btn-text {
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 60px;
+    width: 60px;
+    border: none;
+    object-fit: contain;
+    border: none;
+    color: none;
+}
+
+.move-line {
+    background-image: url(../img/icons/up-and-down-arrows.png);
+}
+
+.increase-font-weight {
+    background-image: url(../img/icons/A-plus.png);
+}
+
+.decrease-font-weight {
+    background-image: url(../img/icons/a-minus.png);
+}
+
+.align-left {
+    background-image: url(../img/icons/AL.png);
+}
+
+.align-right {
+    background-image: url(../img/icons/AR.png);
+}
+
+.align-center {
+    background-image: url(../img/icons/AC.png);
+}
+
+.font-style {
+    font-family: 'poppins';
+    padding-inline-start: 25px;
+    font-size: 1.4rem;
+}
+
+.stroke {
+    background-image: url(../img/icons/stroke.png);
+}
+
+.fill {
+    background-image: url(../img/icons/color.png);
+}
+
+.delete-line {
+    background-image: url(../img/icons/trash.png);
+}
+
+.add-line {
+    background-image: url(../img/icons/Add-line.png);
+}
+
 
 canvas {
     display: block;
@@ -142,15 +230,8 @@ canvas {
 .canvas-container {
     width: 600px;
     height: 600px;
-    background-color: orangered;
 }
 
-.editor-controls {
-    background-color: rgb(56, 59, 66);
-    padding: 25px;
-    width: 600px;
-    height: 600px;
-}
 
 /* main */
 

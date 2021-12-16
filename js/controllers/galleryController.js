@@ -18,7 +18,6 @@ function renderGallery() {
 }
 
 function onImgSelect(imgId) {
-    // console.log('image selected id:', imgId);
     setImg(imgId);
     goToEditor()
 }
