@@ -2,7 +2,11 @@
 
 
 function init() {
-    initGalleryController();
+    var fontImpact = new FontFace('impact', 'url(../fonts/impact.ttf)');
+
+    fontImpact.load().then(() => { initGalleryController() });
+
+    // initGalleryController()
 }
 
 

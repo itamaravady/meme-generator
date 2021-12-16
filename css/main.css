@@ -14,6 +14,11 @@
     src: url(../fonts/Poppins-Medium.ttf)
 }
 
+@font-face {
+    font-family: "impact";
+    src: url(../fonts/impact.ttf)
+}
+
 
 body {
     margin: 0;

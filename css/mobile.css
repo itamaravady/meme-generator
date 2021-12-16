@@ -67,12 +67,12 @@
         grid-row: 3;
     }
 
-    .stroke {
+    .stroke-label {
         grid-row: 1;
         grid-column: 3;
     }
 
-    .fill {
+    .fill-label {
         grid-row: 1;
         grid-column: 4;
     }

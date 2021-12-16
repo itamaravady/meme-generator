@@ -43,9 +43,10 @@ function getMemeDefault(imgId) {
         lines: [
             {
                 txt: 'Let the fun begin',
-                position: { x: 20, y: 100 },
+                position: { x: 20, y: 60 },
+                RectPosition: { x: 20, y: 60 },
                 order: 'top',
-                size: 80,
+                size: 50,
                 lineWidth: 2,
                 font: 'impact',
                 align: 'left',
@@ -54,9 +55,10 @@ function getMemeDefault(imgId) {
             },
             {
                 txt: 'or dont...',
-                position: { x: 20, y: 550 },
+                position: { x: 20, y: 380 },
+                RectPosition: { x: 20, y: 380 },
                 order: 'bot',
-                size: 80,
+                size: 50,
                 lineWidth: 2,
                 font: 'impact',
                 align: 'left',
@@ -75,7 +77,6 @@ function getMeme() {
 function getCurrLine() {
     return gMeme.lines[gMeme.selectedLineIdx];
 }
-
 
 
 
@@ -107,28 +108,34 @@ function _getImgById(id) {
 
 function addLine(canvsWidth, canvasHeight) {
     var textSize = getMemeDefault(100).lines[0].size;
+    const canvasDim = getCanvasSize();
     var y;
     var lineOrder;
 
     //support adding lines by order from top to bottom
     if (gDeletedLines.top) {
-        y = 100;
+        y = 20 + textSize;
         lineOrder = 'top';
         gDeletedLines.top = 0;
     }
     else if (gDeletedLines.bot) {
-        y = 550;
+        y = canvasDim.height - 20;
+        console.log(canvasHeight);
         lineOrder = 'bot'
         gDeletedLines.bot = 0;
     }
     else {
-        y = (canvasHeight + textSize) / 2;
+        y = (canvasDim.height + textSize) / 2;
         lineOrder = 'mid';
     }
+
+
     //add line
     var line = {
         txt: 'New Line',
         position: { x: 20, y },
+        RectPosition: { x: 20, y },
+        leftPosition: { x: 20, y: 20 },
         order: lineOrder,
         size: 80,
         lineWidth: 2,
@@ -141,6 +148,7 @@ function addLine(canvsWidth, canvasHeight) {
     const newLineIdx = gMeme.lines.length - 1;
     setCurrLine(newLineIdx);
 }
+
 
 
 function removeLine() {
@@ -159,6 +167,10 @@ function setCurrLine(chosenLineIdx) {
     gMeme.selectedLineIdx = chosenLineIdx;
 }
 
+function isCurrLine(idx) {
+    return (gMeme.selectedLineIdx === idx);
+}
+
 function setMemeContent(inputName, inputValue) {
     const line = getCurrLine();
     line[inputName] = inputValue;
@@ -170,21 +182,31 @@ function setLineFontSize(inputValue) {
     line.size += +inputValue;
 }
 
-function alignLine(alignSide, alignCoord) {
+function alignLine(alignSide, lineWidth) {
+
     const line = getCurrLine()
     line.align = alignSide;
-    line.position.x = alignCoord[alignSide];
-    console.log(alignSide);
-    console.log(alignCoord[alignSide]);
+    var pos = getTxtLineCoords(line, lineWidth);
+    line.RectPosition.x = pos.x;
+}
+
+function getTxtLineCoords(line, lineWidth) {
+    var { x, y } = line.position;
+    switch (line.align) {
+        case 'left':
+            return { x: 20, y }
+            break;
+        case 'center':
+            return { x: (x - lineWidth / 2), y }
+            break;
+        case 'right':
+            return { x: (x - lineWidth), y }
+            break;
+    }
 }
 
 //text line position
 
-// function isLineClicked(clickedPos) {
-//     const line = getCurrLine();
-//     var clickedLine = getClickedLine(clickedPos);
-//     return isClicked;
-// }
 
 function getClickedLine(clickedPos) {
     var clickedLine;
@@ -197,4 +219,4 @@ function getClickedLine(clickedPos) {
 }
 
 
-context.measureText(testLine)
+// context.measureText(testLine)

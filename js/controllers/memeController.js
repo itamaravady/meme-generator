@@ -10,12 +10,14 @@ const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 function initMemeController() {
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d');
-    getMemeDefault();
     addListeners();
     renderMeme();
 }
 
-
+function getCanvasSize() {
+    var canvasSize = { width: gElCanvas.width, height: gElCanvas.height };
+    return canvasSize;
+}
 
 //renders
 function renderMeme() {
@@ -39,7 +41,7 @@ function renderMeme() {
 function renderMemeContent() {
     const meme = getMeme();
     const lines = meme.lines;
-    lines.forEach((line, idx) => drawTxtLine(line.position, idx));
+    lines.forEach((line, idx) => drawTxtLine(line, idx));
 }
 
 
@@ -136,22 +138,49 @@ function resizeCanvas() {
 }
 
 
-function drawTxtLine({ x, y }, idx) {
+function drawTxtLine(line, idx) {
+    var { x, y } = line.position;
     const meme = getMeme();
     var txtLine = meme.lines[idx];
-    const txtSize = txtLine.size;
     const txtFont = txtLine.font;
+    const txtSize = txtLine.size;
     gCtx.lineWidth = txtLine.lineWidth;
-    gCtx.textAlign = txtLine.align;
+    // STOPPED HERE
+    // gCtx.textAlign = txtLine.align;
     gCtx.font = `${txtSize}px ${txtFont}`;
     gCtx.strokeStyle = txtLine.stroke;
     gCtx.fillStyle = txtLine.fill;
     gCtx.fillText(txtLine.txt, x, y);
     gCtx.strokeText(txtLine.txt, x, y);
+    // const currLine = getCurrLine();
+    if (isCurrLine(idx)) {
+        var txtWidth = getTextWidth(txtLine);
+        x = line.RectPosition.x
+        y = line.RectPosition.y
+        drawRect(x - 0.02 * txtWidth, y + 0.2 * txtSize, txtWidth + 0.04 * txtWidth, -txtSize - 0.1 * txtSize);
+    }
+
 }
 
+function getTextWidth(line) {
+    return gCtx.measureText(line.txt).width;
+}
+
+function drawRect(x, y, sizeX, sizeY) {
+    gCtx.beginPath();
+    gCtx.rect(x, y, sizeX, sizeY);
+    gCtx.setLineDash([8, 8]);
+    gCtx.lineWidth = 2.5;
+    gCtx.strokeStyle = 'white';
+    gCtx.stroke();
+    gCtx.closePath();
+    gCtx.setLineDash([]);
+}
+
+
+
 function onAddLine() {
-    addLine(gElCanvas.width, gElCanvas.height);
+    addLine();
     renderMeme();
 }
 
@@ -185,9 +214,12 @@ function onRemoveLine() {
 }
 
 function onAlignLine(alignSide) {
-    alignLine(alignSide, gAlignCoords);
+    const line = getCurrLine()
+    var lineWidth = gCtx.measureText(line.txt).width;
+    alignLine(alignSide, lineWidth);
     renderMeme();
 }
+
 
 
 //text line events
