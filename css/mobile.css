@@ -1,0 +1,79 @@
+.canvas-container {
+    width: 400px;
+    height: 400px;
+}
+
+.editor {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    margin-inline-start: 30px;
+}
+
+.editor-controls {
+
+    width: 400px;
+
+}
+
+.grid-text-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 60px);
+    grid-template-rows: repeat(3, 60px);
+    gap: 10px;
+    justify-content: space-between;
+}
+
+@media (max-width: 980px) {
+
+    /* hamburger */
+
+    .btn-menu {
+        width: 40px;
+        height: 40px;
+        border: none;
+    }
+
+    .main-nav ul {
+        position: fixed;
+        top: -9px;
+        right: 0;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: linear-gradient(0deg, #139bb1 0%, #2cbc74 100%);
+        height: 100vh;
+        width: 200px;
+        transform: translateX(100%);
+        transition: transform .6s, box-shadow .6s;
+    }
+
+    body.menu-open .main-nav ul {
+        box-shadow: 0px 0px 30px rgb(0 0 0 / 30%);
+        transform: translateX(0);
+    }
+
+
+    .main-nav li {
+        border-bottom: 1px solid #e5e5e5;
+        box-shadow: none;
+    }
+
+    /* GRID */
+
+    .font-style {
+        grid-column: 1 span 4;
+        grid-row: 3;
+    }
+
+    .stroke {
+        grid-row: 1;
+        grid-column: 3;
+    }
+
+    .fill {
+        grid-row: 1;
+        grid-column: 4;
+    }
+}

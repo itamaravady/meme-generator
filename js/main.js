@@ -14,3 +14,7 @@ function hideSection(sectionName) {
     const elSection = document.querySelector(`.${sectionName}`);
     elSection.classList.remove('open');
 }
+
+function toggleMenu() {
+    document.body.classList.toggle('menu-open');
+}

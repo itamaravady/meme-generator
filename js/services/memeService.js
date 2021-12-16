@@ -189,10 +189,12 @@ function alignLine(alignSide, alignCoord) {
 function getClickedLine(clickedPos) {
     var clickedLine;
     gMeme.lines.forEach((line, idx) => {
-        const clickedYCoord = clickedPos.y
         const botYCoord = line.position.y;
         const topYCoord = botYCoord - line.size;
-        if (clickedYCoord >= topYCoord && clickedYCoord <= botYCoord) clickedLine = { line, idx };
+        if (clickedPos.y >= topYCoord && clickedPos.y <= botYCoord) clickedLine = { line, idx };
     });
     return clickedLine;
 }
+
+
+context.measureText(testLine)

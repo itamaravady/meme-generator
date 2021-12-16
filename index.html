@@ -10,18 +10,24 @@
 </head>
 
 <body onload="init()">
-    <header class="flex space-between">
-        <div class="logo">MEME Generator</div>
-        <ul class="flex space-between clean-list">
-            <li onclick="goToGallery()" class="btn">Gallery</li>
-            <li class="btn">about</li>
-        </ul>
+
+    <div class="main-screen" onclick="toggleMenu()"></div>
+
+    <header class="flex space-between center-items">
+        <div class="logo"><img src="img/LOGO/LOGO.png" alt=""></div>
+        <nav class="main-nav">
+            <ul class="flex space-between clean-list">
+                <li onclick="goToGallery()" class="btn">Gallery</li>
+                <li class="btn">about</li>
+            </ul>
+        </nav>
+        <button class="btn btn-menu" onclick="toggleMenu()">☰</button>
     </header>
     <section class="gallery main-layout open">
         <section class="images-container grid"></section>
     </section>
     <div class="editor-container">
-        <section class="editor flex space-around center-items">
+        <section class="editor space-around center-items">
             <div class="canvas-container">
                 <canvas width="500" height="500"></canvas>
             </div>
@@ -46,8 +52,11 @@
                         <option value="impact">IMPACT</option>
                         <option value="poppins">poppins</option>
                     </select>
-                    <input class="btn btn-text stroke" name="stroke" type="color" onchange="onSetMemeContent(this)">
-                    <input class="btn btn-text fill" name="fill" type="color" onchange="onSetMemeContent(this)">
+                    <label class="btn stroke-label" for="stroke-input"><input id="stroke-input"
+                            class="btn btn-text stroke" name="stroke" type="color"
+                            onchange="onSetMemeContent(this)"></label>
+                    <label class="btn fill-label" for="fill-input"><input id="fill-input" class="btn btn-text fill"
+                            name="fill" type="color" onchange="onSetMemeContent(this)"></label>
 
                 </section>
 

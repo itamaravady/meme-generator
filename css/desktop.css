@@ -1,0 +1,55 @@
+.canvas-container {
+    width: 500px;
+    height: 500px;
+}
+
+button, .btn {
+    cursor: pointer;
+}
+
+
+header {
+
+    max-width: 1050px;
+
+}
+
+.main-layout {
+    max-width: 1024px;
+}
+
+
+.editor {
+    display: flex;
+    max-width: 1024px;
+    flex-direction: row;
+}
+
+header ul li:last-child {
+    margin-inline-end: 70px;
+}
+
+.logo {
+    margin-inline-start: 70px;
+}
+
+.btn-menu {
+    display: none;
+}
+
+header .btn {
+    box-shadow: none;
+}
+
+.editor-controls {
+    width: 500px;
+    height: 500px;
+}
+
+.grid-text-controls {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(2, 60px);
+    gap: 15px;
+    justify-content: space-between;
+}
