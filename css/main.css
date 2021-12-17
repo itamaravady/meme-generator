@@ -26,12 +26,6 @@ body {
 
 }
 
-
-.btn {
-    background-color: white;
-}
-
-/* gallery */
 header {
     background: linear-gradient(90deg, #139bb1 0%, #2cbc74 100%);
     border-radius: 3em;
@@ -45,7 +39,11 @@ header ul {
     gap: 20px;
 }
 
-
+header .main-nav li:hover {
+    border-radius: 2rem;
+    background-color: #ebeef3;
+    color: #2cbc74
+}
 
 .logo {
     margin-block-start: 25px;
@@ -60,6 +58,8 @@ header ul {
 .main-layout {
     margin: 10px auto;
 }
+
+/* gallery */
 
 .gallery {
     background-color: #383b44;
@@ -88,15 +88,31 @@ header ul {
     justify-content: center;
 }
 
+/* saved memes */
+
+.saved-memes {
+    background-color: #383b44;
+    border-radius: 0.4rem;
+    padding: 40px 50px 50px 40px;
+    display: none;
+}
+
+.memes-container .image img {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 3px 0px #0000006b;
+}
+
+.memes-container {
+    justify-content: center;
+}
+
 
 
 /* canvas */
-
-
-
-.text-controls .font-style {
-    grid-column: span 3;
-}
 
 .editor-container {
     display: none;
@@ -115,7 +131,7 @@ header ul {
 }
 
 .btn, .editor-controls select, .editor-controls input {
-    box-shadow: inset 0 -4px 0px #00000094;
+    box-shadow: inset 0 -4px 0px #00000094, inset 0 4px 0px #ffffffef;
 }
 
 .editor-controls input[name="txt"] {
@@ -123,6 +139,7 @@ header ul {
     width: 100%;
     height: 4rem;
     border: none;
+    background-color: #ebeef3;
     border-radius: 3em;
     text-align: center;
     font-size: 1.6rem;
@@ -136,17 +153,34 @@ header ul {
     justify-content: center;
     align-items: center;
     margin-bottom: 25px;
-
 }
+
+.line-controls .move-line {
+    background-color: #33abc9;
+}
+
+.line-controls .add-line {
+    background-color: #3cce53;
+}
+
+.line-controls .delete-line {
+    background-color: #e43e36;
+}
+
+
 
 .line-controls>*, .btn-menu {
     margin-inline-end: 25px;
     border-radius: 0.6rem;
 }
 
+.line-controls>*:last-child {
+    margin-inline-end: 0;
+}
+
 .text-controls>* {
     border-radius: 0.6rem;
-
+    background-color: #ebeef3;
 }
 
 .text-controls {
@@ -158,7 +192,7 @@ header ul {
 
 
 .btn-text, .stroke-label, .fill-label {
-    background-size: 80%;
+    background-size: 60%;
     background-repeat: no-repeat;
     background-position: center;
     height: 60px;
@@ -167,6 +201,10 @@ header ul {
     object-fit: contain;
     border: none;
     color: none;
+}
+
+.stroke-label {
+    background-size: 80%;
 }
 
 .move-line {
@@ -197,7 +235,7 @@ header ul {
     font-family: 'poppins';
     padding-inline-start: 25px;
     font-size: 1.4rem;
-    background-color: white;
+    background-color: #ebeef3;
 }
 
 .stroke-label {

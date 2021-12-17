@@ -22,11 +22,13 @@ function onImgSelect(imgId) {
     goToEditor()
 }
 
-function goToEditor() {
-    initMemeController();
-    hideSection('gallery');
-    showSection('editor-container');
-    // document.querySelector('.editor').classList.add('flex');
+
+
+function goToGallery() {
+    initGalleryController();
+    hideSection('editor-container');
+    hideSection('saved-memes');
+    showSection('gallery');
 }
 
 

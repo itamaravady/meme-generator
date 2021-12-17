@@ -27,10 +27,12 @@ const gImgs = [
 ];
 
 var gMeme;
+const MEME_STORAGE_KEY = 'memeDB';
 const gDeletedLines = {
     top: false,
     bot: false,
 };
+
 
 
 //meme
@@ -40,11 +42,14 @@ function getMemeDefault(imgId) {
 
         selectedImgId: imgId,
         selectedLineIdx: 0,
+
+
         lines: [
             {
                 txt: 'Let the fun begin',
                 position: { x: 20, y: 60 },
-                RectPosition: { x: 20, y: 60 },
+                selectionPos: { x: 20, y: 60 },
+                idDrag: false,
                 order: 'top',
                 size: 50,
                 lineWidth: 2,
@@ -56,7 +61,8 @@ function getMemeDefault(imgId) {
             {
                 txt: 'or dont...',
                 position: { x: 20, y: 380 },
-                RectPosition: { x: 20, y: 380 },
+                selectionPos: { x: 20, y: 380 },
+                idDrag: false,
                 order: 'bot',
                 size: 50,
                 lineWidth: 2,
@@ -72,6 +78,15 @@ function getMemeDefault(imgId) {
 
 function getMeme() {
     return gMeme;
+}
+
+function saveMeme() {
+    const savedMemes = loadFromStorage(MEME_STORAGE_KEY);
+    if (!savedMemes || !savedMemes.length) saveToStorage(MEME_STORAGE_KEY, [gMeme]);
+    else {
+        savedMemes.push(gMeme);
+        saveToStorage(MEME_STORAGE_KEY, savedMemes);
+    }
 }
 
 function getCurrLine() {
@@ -106,7 +121,7 @@ function _getImgById(id) {
 
 //txt
 
-function addLine(canvsWidth, canvasHeight) {
+function addLine(canvasHeight) {
     var textSize = getMemeDefault(100).lines[0].size;
     const canvasDim = getCanvasSize();
     var y;
@@ -134,8 +149,8 @@ function addLine(canvsWidth, canvasHeight) {
     var line = {
         txt: 'New Line',
         position: { x: 20, y },
-        RectPosition: { x: 20, y },
-        leftPosition: { x: 20, y: 20 },
+        selectionPos: { x: 20, y },
+        idDrag: false,
         order: lineOrder,
         size: 80,
         lineWidth: 2,
@@ -182,31 +197,32 @@ function setLineFontSize(inputValue) {
     line.size += +inputValue;
 }
 
-function alignLine(alignSide, lineWidth) {
-
-    const line = getCurrLine()
-    line.align = alignSide;
-    var pos = getTxtLineCoords(line, lineWidth);
-    line.RectPosition.x = pos.x;
-}
-
-function getTxtLineCoords(line, lineWidth) {
-    var { x, y } = line.position;
-    switch (line.align) {
-        case 'left':
-            return { x: 20, y }
-            break;
-        case 'center':
-            return { x: (x - lineWidth / 2), y }
-            break;
-        case 'right':
-            return { x: (x - lineWidth), y }
-            break;
-    }
-}
 
 //text line position
 
+function alignLine(alignSide) {
+
+    const line = getCurrLine();
+    line.align = alignSide;
+    var pos = getAlignCoords(line);
+    line.position = pos;
+    var selectionPos = getSelectionPos(line);
+    line.selectionPos = selectionPos;
+}
+
+function getSelectionPos(line) {
+    var { x, y } = line.position;
+    const lineWidth = getTextWidth(line);
+
+    switch (line.align) {
+        case 'left':
+            return { x, y };
+        case 'center':
+            return { x: (x - lineWidth / 2), y };
+        case 'right':
+            return { x: (x - lineWidth), y };
+    }
+}
 
 function getClickedLine(clickedPos) {
     var clickedLine;
@@ -218,5 +234,15 @@ function getClickedLine(clickedPos) {
     return clickedLine;
 }
 
+function setLineDrag(line, isDrag) {
+    line.isDrag = isDrag;
+}
 
-// context.measureText(testLine)
+function moveTxtLine(dx, dy) {
+    const line = getCurrLine();
+    line.position.x += dx;
+    line.position.y += dy;
+    //move selection rect
+    line.selectionPos.x += dx;
+    line.selectionPos.y += dy;
+}

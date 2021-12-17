@@ -18,6 +18,7 @@
         <nav class="main-nav">
             <ul class="flex space-between clean-list">
                 <li onclick="goToGallery()" class="btn">Gallery</li>
+                <li onclick="goToSavedMemes()" class="btn">Memes</li>
                 <li class="btn">about</li>
             </ul>
         </nav>
@@ -26,13 +27,16 @@
     <section class="gallery main-layout open">
         <section class="images-container grid"></section>
     </section>
+    <section class="saved-memes main-layout">
+        <section class="memes-container grid"></section>
+    </section>
     <div class="editor-container">
         <section class="editor space-around center-items">
             <div class="canvas-container">
                 <canvas width="500" height="500"></canvas>
             </div>
             <section class="editor-controls">
-                <input type="text" name="txt" onChange="onSetMemeContent(this)">
+                <input type="text" name="txt">
 
                 <section class="line-controls">
                     <button class=" btn btn-text move-line" onclick="onSetCurrLine()"></button>
@@ -59,14 +63,18 @@
                             name="fill" type="color" onchange="onSetMemeContent(this)"></label>
 
                 </section>
-
+                <section class="file-actions">
+                    <button class="btn btn-save" onclick="onSaveMeme()">save</button>
+                </section>
             </section>
         </section>
     </div>
 
+    <script src="js/services/storage.sevice.js"></script>
     <script src="js/services/memeService.js"></script>
     <script src="js/controllers/galleryController.js"></script>
     <script src="js/controllers/memeController.js"></script>
+    <script src="js/controllers/savedMeme.controller.js"></script>
     <script src="js/main.js"></script>
 </body>
 

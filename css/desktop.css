@@ -39,6 +39,7 @@ header ul li:last-child {
 
 header .btn {
     box-shadow: none;
+    padding: 3px 15px;
 }
 
 .editor-controls {
@@ -52,4 +53,8 @@ header .btn {
     grid-template-rows: repeat(2, 60px);
     gap: 15px;
     justify-content: space-between;
+}
+
+.text-controls .font-style {
+    grid-column: span 3;
 }
