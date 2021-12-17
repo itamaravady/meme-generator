@@ -1,3 +1,7 @@
+'use strict'
+
+var gMemeCanvases = []
+
 function initSavedMemeController() {
     renderSavedMemes()
 }
@@ -11,25 +15,24 @@ function goToSavedMemes() {
 }
 
 function renderSavedMemes() {
-    const imgs = getImgs();
-    const strHtmls = imgs.map((img) => {
+    const storageKey = getStorageKey();
+    const memes = loadFromStorage(storageKey);
+    if (!memes || !memes.length) return;
+    //render memes
+    const strHtmls = memes.map((meme) => {
         return `
-        <div class="image">
-            <img src="${img.url}">
-        </div> 
+        <div class="image ">
+                 <img src="${meme.img}" onclick="showSavedMeme('${meme.id}')">
+         </div>
         `
-    })
-    document.querySelector('.memes-container').innerHTML = strHtmls.join('')
+    });
+    document.querySelector('.memes-container').innerHTML = strHtmls.join('');
 }
 
-// function onImgSelect(imgId) {
-//     setImg(imgId);
-//     goToEditor()
-// }
+function showSavedMeme(memeId) {
+    //TODO - show meme modal with facebook button
 
-// function goToEditor() {
-//     initMemeController();
-//     hideSection('gallery');
-//     showSection('editor-container');
-//     // document.querySelector('.editor').classList.add('flex');
-// }
+    console.log('memeId:', memeId);
+}
+
+//TODO selete meme

@@ -10,7 +10,6 @@
 </head>
 
 <body onload="init()">
-
     <div class="main-screen" onclick="toggleMenu()"></div>
 
     <header class="flex space-between center-items">
@@ -28,7 +27,7 @@
         <section class="images-container grid"></section>
     </section>
     <section class="saved-memes main-layout">
-        <section class="memes-container grid"></section>
+        <section class="memes-container grid">No Memes Yet :/</section>
     </section>
     <div class="editor-container">
         <section class="editor space-around center-items">
@@ -70,7 +69,9 @@
         </section>
     </div>
 
+
     <script src="js/services/storage.sevice.js"></script>
+    <script src="js/services/utill.service.js"></script>
     <script src="js/services/memeService.js"></script>
     <script src="js/controllers/galleryController.js"></script>
     <script src="js/controllers/memeController.js"></script>

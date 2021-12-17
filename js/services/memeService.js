@@ -34,12 +34,14 @@ const gDeletedLines = {
 };
 
 
+function getStorageKey() {
+    return MEME_STORAGE_KEY;
+}
 
 //meme
 
 function getMemeDefault(imgId) {
     return {
-
         selectedImgId: imgId,
         selectedLineIdx: 0,
 
@@ -80,13 +82,11 @@ function getMeme() {
     return gMeme;
 }
 
-function saveMeme() {
+function saveMeme(canvas) {
+
+
     const savedMemes = loadFromStorage(MEME_STORAGE_KEY);
-    if (!savedMemes || !savedMemes.length) saveToStorage(MEME_STORAGE_KEY, [gMeme]);
-    else {
-        savedMemes.push(gMeme);
-        saveToStorage(MEME_STORAGE_KEY, savedMemes);
-    }
+    uploadImg(canvas, savedMemes);
 }
 
 function getCurrLine() {
@@ -107,8 +107,8 @@ function setImg(imgId) {
 }
 
 
-function getImgUrl() {
-    const id = gMeme.selectedImgId;
+function getImgUrl(meme = gMeme) {
+    const id = meme.selectedImgId;
     const img = _getImgById(id);
     return img.url;
 }

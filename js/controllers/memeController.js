@@ -27,7 +27,7 @@ function getCanvasSize() {
 }
 
 //renders
-function renderMeme() {
+function renderMeme(isToPublish = false) {
     //create and load new image
     var img = new Image();
     const imgUrl = getImgUrl();
@@ -38,17 +38,21 @@ function renderMeme() {
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
 
         //when image loads continure rendering meme content on canvas
-        renderMemeContent();
+        renderMemeContent(isToPublish);
         renderEditorControls();
     };
 }
 
 
 
-function renderMemeContent() {
-    const meme = getMeme();
+function renderMemeContent(isToPublish) {
+    const meme = getMeme()
     const lines = meme.lines;
-    lines.forEach((line, idx) => drawTxtLine(line, idx));
+    lines.forEach((line, idx) => drawTxtLine(line, idx, isToPublish));
+    if (isToPublish) {
+        saveMeme(gElCanvas);
+        goToSavedMemes();
+    }
 }
 
 
@@ -66,8 +70,9 @@ function renderEditorControls() {
 
 
 function onSaveMeme() {
-    saveMeme();
-    goToSavedMemes();
+    renderMeme(true);
+    console.log('saves?');
+
 }
 
 
@@ -152,7 +157,7 @@ function resizeCanvas() {
 }
 
 
-function drawTxtLine(line, idx) {
+function drawTxtLine(line, idx, isToPublish) {
     var { x, y } = line.position;
     const meme = getMeme();
     var txtLine = meme.lines[idx];
@@ -166,8 +171,9 @@ function drawTxtLine(line, idx) {
     gCtx.fillStyle = txtLine.fill;
     gCtx.fillText(txtLine.txt, x, y);
     gCtx.strokeText(txtLine.txt, x, y);
-    // const currLine = getCurrLine();
-    if (isCurrLine(idx)) {
+    console.log('istopublish', isToPublish);
+    if (!isToPublish && isCurrLine(idx)) {
+        console.log('no publish');
         var txtWidth = getTextWidth(txtLine);
         x = line.selectionPos.x
         y = line.selectionPos.y
