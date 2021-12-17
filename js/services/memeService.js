@@ -2,29 +2,7 @@
 
 //globals
 var gNextId = 100;
-const gImgs = [
-    { id: gNextId++, url: 'img/7.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/8.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-    { id: gNextId++, url: 'img/9.jpg', keywords: ['funny', 'political'] },
-];
+
 
 var gMeme;
 const MEME_STORAGE_KEY = 'memeDB';
@@ -82,11 +60,12 @@ function getMeme() {
     return gMeme;
 }
 
+
+
 function saveMeme(canvas) {
-
-
     const savedMemes = loadFromStorage(MEME_STORAGE_KEY);
     uploadImg(canvas, savedMemes);
+    return savedMemes;
 }
 
 function getCurrLine() {
@@ -98,9 +77,6 @@ function getCurrLine() {
 //img
 
 
-function getImgs() {
-    return gImgs;
-}
 
 function setImg(imgId) {
     gMeme = getMemeDefault(imgId);

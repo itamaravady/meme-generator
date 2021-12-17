@@ -49,10 +49,10 @@ function renderMemeContent(isToPublish) {
     const meme = getMeme()
     const lines = meme.lines;
     lines.forEach((line, idx) => drawTxtLine(line, idx, isToPublish));
-    if (isToPublish) {
-        saveMeme(gElCanvas);
-        goToSavedMemes();
-    }
+    // if (isToPublish) {
+    //     saveMeme(gElCanvas);
+    //     goToSavedMemes();
+    // }
 }
 
 
@@ -67,15 +67,25 @@ function renderEditorControls() {
     document.querySelector('input[name=stroke]').value = line.stroke;
 }
 
-
-
-function onSaveMeme() {
+async function onSaveMeme() {
     renderMeme(true);
-    console.log('saves?');
-
+    saveMeme(gElCanvas);
+    goToSavedMemes();
 }
 
+function onDownloadMeme(elLink) {
+    // renderMeme(true);
+    elLink.href = gElCanvas.toDataURL('image/jpeg');
+}
 
+async function onShareMeme() {
+    renderMeme(true);
+    var savedMemes = saveMeme(gElCanvas);
+    var facebookBtn = savedMemes[savedMemes.length - 1].facebookBtn;
+    const shareBtn = document.querySelector('.btn-share-ready');
+    shareBtn.innerHTML = facebookBtn;
+    shareBtn.classList.add('open')
+}
 
 //listeners
 
@@ -171,7 +181,6 @@ function drawTxtLine(line, idx, isToPublish) {
     gCtx.fillStyle = txtLine.fill;
     gCtx.fillText(txtLine.txt, x, y);
     gCtx.strokeText(txtLine.txt, x, y);
-    console.log('istopublish', isToPublish);
     if (!isToPublish && isCurrLine(idx)) {
         console.log('no publish');
         var txtWidth = getTextWidth(txtLine);

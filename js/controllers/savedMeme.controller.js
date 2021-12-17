@@ -21,7 +21,7 @@ function renderSavedMemes() {
     //render memes
     const strHtmls = memes.map((meme) => {
         return `
-        <div class="image ">
+        <div class="image">
                  <img src="${meme.img}" onclick="showSavedMeme('${meme.id}')">
          </div>
         `

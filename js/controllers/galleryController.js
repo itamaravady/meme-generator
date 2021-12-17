@@ -2,6 +2,7 @@
 
 function initGalleryController() {
     renderGallery()
+    renderSearchKies()
 }
 
 
@@ -22,7 +23,10 @@ function onImgSelect(imgId) {
     goToEditor()
 }
 
-
+function onFilterBy(elSearchKey) {
+    setFilter(elSearchKey.value);
+    renderGallery()
+}
 
 function goToGallery() {
     initGalleryController();
@@ -31,4 +35,14 @@ function goToGallery() {
     showSection('gallery');
 }
 
+
+function renderSearchKies() {
+    const searchKies = getSearchKies();
+    const strHtmls = searchKies.map((searchKey) => {
+        return `
+            <option value="${searchKey}">
+        `
+    })
+    document.querySelector('datalist.search').innerHTML = strHtmls.join('');
+}
 

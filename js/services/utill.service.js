@@ -19,9 +19,7 @@ function uploadImg(canvas, savedMemes) {
         // return uploadedImgUrl;
         var newImgUrl = uploadedImgUrl.replace('serveForShare.php?id=', 'img/');
         newImgUrl = newImgUrl.concat('.jpg');
-        var facebookBtn = `<a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
-           Share   
-        </a>`
+        var facebookBtn = getShareBtn(encodedUploadedImgUrl, uploadedImgUrl);
         var newMeme = { id: makeId(9), img: newImgUrl, facebookBtn }
         if (!savedMemes || !savedMemes.length) saveToStorage(getStorageKey(), [newMeme]);
         else {
@@ -33,6 +31,12 @@ function uploadImg(canvas, savedMemes) {
 
     // document.querySelector('.share-container').innerHTML = 
     doUploadImg(imgDataUrl, onSuccess);
+}
+
+function getShareBtn(encoded, imgUrl) {
+    return `<a href="https://www.facebook.com/sharer/sharer.php?u=${encoded}&t=${encoded}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${imgUrl}&t=${imgUrl}'); return false;">
+    Ready to Share!   
+ </a>`
 }
 
 function doUploadImg(imgDataUrl, onSuccess) {

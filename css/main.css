@@ -112,7 +112,7 @@ header .main-nav li:hover {
 
 
 
-/* canvas */
+/* canvas controls*/
 
 .editor-container {
     display: none;
@@ -131,7 +131,7 @@ header .main-nav li:hover {
 }
 
 .btn, .editor-controls select, .editor-controls input {
-    box-shadow: inset 0 -4px 0px #00000094, inset 0 4px 0px #ffffffef;
+    box-shadow: inset 0 -4px 0px #00000094, inset 0 4px 0px #bebebeb2;
 }
 
 .editor-controls input[name="txt"] {
@@ -272,6 +272,41 @@ canvas {
 }
 
 
+.file-actions {
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-actions>* {
+    font-family: 'poppins';
+    font-size: 1.1rem;
+    border-radius: 0.6rem;
+    height: 100%;
+    flex-grow: 1;
+    border: none;
+    color: white;
+}
+
+.file-actions .btn-save {
+    background-color: rgb(0, 140, 255);
+}
+
+.file-actions .btn-download {
+    background-color: rgb(255, 145, 0);
+    text-align: center;
+    line-height: 2.2em;
+}
+
+.file-actions .btn-share {
+    background-color: rgb(158, 55, 255);
+}
+
+
+.btn-share-ready {
+    display: none;
+}
 
 /* main */
 
