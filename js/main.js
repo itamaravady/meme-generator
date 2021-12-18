@@ -17,6 +17,14 @@ function hideSection(sectionName) {
     elSection.classList.remove('open');
     elSection.classList.remove('flex');
 }
+function showButton(sectionName) {
+    const elSection = document.querySelector(`.${sectionName}`);
+    elSection.classList.add('show-btn');
+}
+function hideButton(sectionName) {
+    const elSection = document.querySelector(`.${sectionName}`);
+    elSection.classList.remove('show-btn');
+}
 
 function toggleMenu() {
     document.body.classList.toggle('menu-open');

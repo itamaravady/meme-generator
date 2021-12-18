@@ -12,9 +12,9 @@ function initMemeController() {
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d');
     addListeners();
-    hideSection('btn-goto-memes');
+    hideButton('btn-goto-memes');
     hideSection('share-container');
-    showSection('btn-save');
+    showButton('btn-save');
     renderMeme();
     renderEditorStickers();
 }
@@ -119,9 +119,9 @@ function generateShareBtn(savedMeme) {
     var elFacebookBtn = savedMeme.facebookBtn;
     const elShareContainer = document.querySelector('.share-container');
     elShareContainer.innerHTML = elFacebookBtn;
-    showSection('btn-goto-memes');
+    showButton('btn-goto-memes');
     document.querySelector('.share-container').style.display = "block";
-    hideSection('btn-save');
+    hideButton('btn-save');
 }
 
 function onDownloadMeme(elLink) {

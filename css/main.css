@@ -303,6 +303,8 @@ canvas {
 
 .file-actions .btn-save {
     background-color: rgb(0, 140, 255);
+    text-align: center;
+    line-height: 2.2em;
 }
 
 .file-actions .btn-download {
@@ -422,6 +424,10 @@ body.menu-open .main-screen {
 }
 
 .open {
+    display: block;
+}
+
+.show-btn {
     display: block;
 }
 
