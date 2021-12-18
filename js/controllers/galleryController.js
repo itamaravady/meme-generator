@@ -30,6 +30,7 @@ function onFilterBy(elSearchKey) {
 
 function goToGallery() {
     initGalleryController();
+    document.querySelector('.share-container').style.display = "none";
     hideSection('editor-container');
     hideSection('saved-memes');
     showSection('gallery');

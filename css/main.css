@@ -64,15 +64,24 @@ header .main-nav li:hover {
 .gallery {
     background-color: #383b44;
     border-radius: 0.4rem;
-    padding: 40px 50px 50px 40px;
+    /* padding: 40px 50px 40px 50px; */
     display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 200px);
-    grid-auto-rows: 180px;
-    gap: 30px;
+.search-list {
+    align-self: center;
+    width: 30%;
+    height: 30px;
+    border-radius: 3rem;
+    border: none;
+    background-color: #22252e;
+    font-family: 'poppins';
+    font-size: 1.1rem;
+    padding: 20px;
+    color: #6d6d6e;
 }
 
 .images-container .image img {
@@ -86,6 +95,7 @@ header .main-nav li:hover {
 
 .images-container {
     justify-content: center;
+    align-self: stretch;
 }
 
 /* saved memes */
@@ -95,6 +105,7 @@ header .main-nav li:hover {
     border-radius: 0.4rem;
     padding: 40px 50px 50px 40px;
     display: none;
+    flex-direction: column;
 }
 
 .memes-container .image img {
@@ -279,14 +290,15 @@ canvas {
     gap: 10px;
 }
 
-.file-actions>* {
+.file-actions>*, .file-actions>div {
     font-family: 'poppins';
     font-size: 1.1rem;
-    border-radius: 0.6rem;
     height: 100%;
     flex-grow: 1;
     border: none;
     color: white;
+    border-radius: 0.6rem;
+    display: none;
 }
 
 .file-actions .btn-save {
@@ -297,24 +309,58 @@ canvas {
     background-color: rgb(255, 145, 0);
     text-align: center;
     line-height: 2.2em;
+
 }
 
 .file-actions .btn-share {
+    color: white;
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.6rem;
+    text-align: center;
+    line-height: 2.2em;
     background-color: rgb(158, 55, 255);
+
+}
+
+.file-actions .btn-goto-memes {
+    background-color: rgb(0, 140, 255);
+
+
 }
 
 
-.btn-share-ready {
-    display: none;
+.stickers-container {
+    display: block;
+    width: 100%;
+    height: 4rem;
+    border: none;
+    background-color: #ebeef3;
+    border-radius: 3em;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 3.8rem;
+    color: #3d3d3d;
+    font-family: 'poppins';
+    margin-bottom: 15px;
 }
+
 
 /* main */
 
-
-
-.open {
-    display: block;
+.modal .btn {
+    height: 40px;
+    background-color: rgb(49, 121, 255);
+    align-self: center;
+    width: 100px;
+    border-radius: 3rem;
+    color: white;
+    font-family: 'poppins';
+    text-align: center;
+    line-height: 2.4em;
 }
+
 
 .main-screen {
     position: fixed;
@@ -334,15 +380,32 @@ body.menu-open .main-screen {
     opacity: 1;
 }
 
+body.menu-open .main-screen {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.modal {
+    display: none;
+    color: white;
+    padding: 10px;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 10px;
+}
+
 /* helpers */
 
-.flex {
-    display: flex;
-}
+
 
 .space-between {
     justify-content: space-between;
 }
+
 
 .space-around {
     justify-content: space-around;
@@ -354,4 +417,32 @@ body.menu-open .main-screen {
 
 .clean-list {
     list-style: none;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+}
+
+.open {
+    display: block;
+}
+
+.flex {
+    display: flex;
+}
+
+.open-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.clean-anchor {
+    text-decoration: none;
+}
+
+.btn-stickers {
+    width: 30px;
+}
+
+.stickers-container li {
+    cursor: pointer;
 }

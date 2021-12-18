@@ -21,7 +21,8 @@ function getStorageKey() {
 function getMemeDefault(imgId) {
     return {
         selectedImgId: imgId,
-        selectedLineIdx: 0,
+        selectionIdx: 0,
+        selectedType: 'lines',
 
 
         lines: [
@@ -29,9 +30,10 @@ function getMemeDefault(imgId) {
                 txt: 'Let the fun begin',
                 position: { x: 20, y: 60 },
                 selectionPos: { x: 20, y: 60 },
-                idDrag: false,
+                isDrag: false,
                 order: 'top',
                 size: 50,
+                width: 400,
                 lineWidth: 2,
                 font: 'impact',
                 align: 'left',
@@ -42,9 +44,10 @@ function getMemeDefault(imgId) {
                 txt: 'or dont...',
                 position: { x: 20, y: 380 },
                 selectionPos: { x: 20, y: 380 },
-                idDrag: false,
+                isDrag: false,
                 order: 'bot',
                 size: 50,
+                width: 400,
                 lineWidth: 2,
                 font: 'impact',
                 align: 'left',
@@ -52,6 +55,7 @@ function getMemeDefault(imgId) {
                 stroke: '#000000',
             },
         ],
+        stickers: [],
     }
 }
 
@@ -62,17 +66,21 @@ function getMeme() {
 
 
 
-function saveMeme(canvas) {
+function saveMeme(canvas, callback) {
     const savedMemes = loadFromStorage(MEME_STORAGE_KEY);
-    uploadImg(canvas, savedMemes);
-    return savedMemes;
+    uploadImg(canvas, savedMemes, callback);
+    // return savedMemes;
 }
 
-function getCurrLine() {
-    return gMeme.lines[gMeme.selectedLineIdx];
+function getCurrElement() {
+    const type = getSelectedElementType();
+    if (!gMeme.lines.length && !gMeme.stickers.length) return null;
+    return gMeme[type][gMeme.selectionIdx];
 }
 
-
+function getSelectedElementType() {
+    return gMeme.selectedType
+}
 
 //img
 
@@ -97,7 +105,7 @@ function _getImgById(id) {
 
 //txt
 
-function addLine(canvasHeight) {
+function addLine(line, width, size) {
     var textSize = getMemeDefault(100).lines[0].size;
     const canvasDim = getCanvasSize();
     var y;
@@ -111,7 +119,6 @@ function addLine(canvasHeight) {
     }
     else if (gDeletedLines.bot) {
         y = canvasDim.height - 20;
-        console.log(canvasHeight);
         lineOrder = 'bot'
         gDeletedLines.bot = 0;
     }
@@ -122,55 +129,95 @@ function addLine(canvasHeight) {
 
 
     //add line
-    var line = {
-        txt: 'New Line',
+    var newLine = {
+        txt: line,
         position: { x: 20, y },
         selectionPos: { x: 20, y },
-        idDrag: false,
+        isDrag: false,
         order: lineOrder,
-        size: 80,
+        size,
+        width,
         lineWidth: 2,
         font: 'impact',
         align: 'left',
         fill: '#FFFFFF',
         stroke: '#000000',
     };
-    gMeme.lines.push(line);
+    gMeme.lines.push(newLine);
     const newLineIdx = gMeme.lines.length - 1;
-    setCurrLine(newLineIdx);
+    setCurrSelection(newLineIdx, 'lines');
 }
 
 
 
-function removeLine() {
-    const lineIdx = gMeme.selectedLineIdx;
-    const line = getCurrLine();
-    gDeletedLines[line.order] = 1;
-    gMeme.lines.splice(lineIdx, 1);
+function removeElement(type) {
+    const elementIdx = gMeme.selectionIdx;
+    const element = getCurrElement();
+    if (type === 'lines') {
+        gDeletedLines[element.order] = 1;
+        gMeme.lines.splice(elementIdx, 1);
+    } else {
+        gMeme.stickers.splice(elementIdx, 1);
+    }
 }
 
-function setCurrLine(chosenLineIdx) {
-    if (chosenLineIdx === undefined) {
-        var lineIdx = ++gMeme.selectedLineIdx;
-        gMeme.selectedLineIdx = (lineIdx >= gMeme.lines.length) ? 0 : lineIdx;
+function setCurrSelection(chosenSelectionIdx, type = gMeme.selectedType) {
+    if (chosenSelectionIdx === undefined) {
+        var selectionIdx = ++gMeme.selectionIdx;
+        gMeme.selectionIdx = (selectionIdx >= gMeme[type].length) ? 0 : selectionIdx;
+        if (gMeme.stickers.length < 2) gMeme.selectedType = 'lines';
         return;
     }
-    gMeme.selectedLineIdx = chosenLineIdx;
+
+
+    gMeme.selectedType = type;
+    gMeme.selectionIdx = chosenSelectionIdx;
 }
 
-function isCurrLine(idx) {
-    return (gMeme.selectedLineIdx === idx);
+function isCurrElement(idx, type) {
+    const currSelectedType = getSelectedElementType();
+    console.log();
+    return (gMeme.selectionIdx === idx && currSelectedType === type);
 }
+
+
+function addSticker(stickerStr, width, size) {
+    const canvasDim = getCanvasSize();
+    const sticker = {
+        sticker: stickerStr,
+        position: { x: (canvasDim.width / 2 - 15), y: (canvasDim.height / 2 + 5) },
+        selectionPos: { x: (canvasDim.width / 2 - 5), y: (canvasDim.height / 2 + 5) },
+        size,
+        width,
+        isDrag: false,
+    }
+    gMeme.stickers.push(sticker);
+    const newStickerIdx = gMeme.stickers.length - 1;
+    setCurrSelection(newStickerIdx, 'stickers');
+}
+
 
 function setMemeContent(inputName, inputValue) {
-    const line = getCurrLine();
+    const line = getCurrElement();
+    const keepLength = line.txt.length;
     line[inputName] = inputValue;
+    const width = line.width * line.txt.length / keepLength
+    line.width = width
+}
+
+function getMemeById(memeId) {
+    var memes = loadFromStorage(MEME_STORAGE_KEY);
+    return memes.find((meme) => meme.id === memeId)
 }
 
 
-function setLineFontSize(inputValue) {
-    const line = getCurrLine();
-    line.size += +inputValue;
+function setFontSize(inputValue) {
+    const element = getCurrElement();
+    var keepSize = element.size;
+    element.size += +inputValue;
+    // const width = getTextWidth(inputValue);
+    const width = element.width * element.size / keepSize;
+    element.width = width;
 }
 
 
@@ -178,47 +225,52 @@ function setLineFontSize(inputValue) {
 
 function alignLine(alignSide) {
 
-    const line = getCurrLine();
+    const line = getCurrElement();
+    //delete later
     line.align = alignSide;
     var pos = getAlignCoords(line);
+
     line.position = pos;
-    var selectionPos = getSelectionPos(line);
-    line.selectionPos = selectionPos;
+    line.selectionPos = line.position;
 }
 
-function getSelectionPos(line) {
-    var { x, y } = line.position;
-    const lineWidth = getTextWidth(line);
-
-    switch (line.align) {
-        case 'left':
-            return { x, y };
-        case 'center':
-            return { x: (x - lineWidth / 2), y };
-        case 'right':
-            return { x: (x - lineWidth), y };
-    }
-}
-
-function getClickedLine(clickedPos) {
-    var clickedLine;
+function getClickedCanvasElement(clickedPos) {
+    var clickedElement
     gMeme.lines.forEach((line, idx) => {
-        const botYCoord = line.position.y;
-        const topYCoord = botYCoord - line.size;
-        if (clickedPos.y >= topYCoord && clickedPos.y <= botYCoord) clickedLine = { line, idx };
+        if (checkIfElementClicked(line, clickedPos)) clickedElement = { element: line, idx, type: 'lines' };
     });
-    return clickedLine;
+    if (clickedElement) return clickedElement;
+    gMeme.stickers.forEach((sticker, idx) => {
+        if (checkIfElementClicked(sticker, clickedPos)) clickedElement = { element: sticker, idx, type: 'stickers' };
+    });
+    if (clickedElement) return clickedElement;
 }
 
-function setLineDrag(line, isDrag) {
-    line.isDrag = isDrag;
+function checkIfElementClicked(element, clickedPos) {
+    const botYCoord = element.position.y;
+    const topYCoord = botYCoord - element.size;
+
+    const leftXCoord = element.position.x;
+    const rightXCoord = leftXCoord + element.width;
+    // console.log('yb:', botYCoord, 'xl:', leftXCoord, 'yt:', topYCoord, 'xr:', rightXCoord)
+    if (clickedPos.y >= topYCoord && clickedPos.y <= botYCoord &&
+        clickedPos.x >= leftXCoord && clickedPos.x <= rightXCoord) {
+        return true;
+    }
+    return false;
 }
 
-function moveTxtLine(dx, dy) {
-    const line = getCurrLine();
-    line.position.x += dx;
-    line.position.y += dy;
+function setElementDrag(element, isDrag) {
+    element.isDrag = isDrag;
+}
+
+function moveElement(dx, dy) {
+    const element = getCurrElement();
+    console.log('element X:', element.position.x,
+        'element Y:', element.position.y);
+    element.position.x += dx;
+    element.position.y += dy;
     //move selection rect
-    line.selectionPos.x += dx;
-    line.selectionPos.y += dy;
+    element.selectionPos.x += dx;
+    element.selectionPos.y += dy;
 }

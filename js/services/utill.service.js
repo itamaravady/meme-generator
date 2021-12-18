@@ -10,10 +10,10 @@ function makeId(length = 6) {
 }
 
 
-function uploadImg(canvas, savedMemes) {
+function uploadImg(canvas, savedMemes, callback) {
     const imgDataUrl = canvas.toDataURL('image/jpeg');
     // A function to be called if request succeeds
-    function onSuccess(uploadedImgUrl) {
+    function onSuccess(uploadedImgUrl, callback) {
         console.log(uploadedImgUrl);
         const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
         // return uploadedImgUrl;
@@ -26,20 +26,20 @@ function uploadImg(canvas, savedMemes) {
             savedMemes.push(newMeme);
             saveToStorage(getStorageKey(), savedMemes);
         }
+        return newMeme;
     }
 
 
     // document.querySelector('.share-container').innerHTML = 
-    doUploadImg(imgDataUrl, onSuccess);
+    doUploadImg(imgDataUrl, onSuccess, callback);
 }
 
 function getShareBtn(encoded, imgUrl) {
-    return `<a href="https://www.facebook.com/sharer/sharer.php?u=${encoded}&t=${encoded}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${imgUrl}&t=${imgUrl}'); return false;">
-    Ready to Share!   
+    return `<a class="btn btn-share clean-anchor" href="https://www.facebook.com/sharer/sharer.php?u=${encoded}&t=${encoded}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${imgUrl}&t=${imgUrl}'); return false;">Share!
  </a>`
 }
 
-function doUploadImg(imgDataUrl, onSuccess) {
+function doUploadImg(imgDataUrl, onSuccess, callback) {
 
     const formData = new FormData();
     formData.append('img', imgDataUrl)
@@ -51,10 +51,20 @@ function doUploadImg(imgDataUrl, onSuccess) {
         .then(res => res.text())
         .then((url) => {
             console.log('Got back live url:', url);
-            onSuccess(url)
+            callback(onSuccess(url))
         })
         .catch((err) => {
             console.error(err)
         })
+}
+
+function getStickersBatch(idx) {
+    var emojis = getStickers();
+    const emojiBatch = emojis.splice(idx, 5);
+    return emojiBatch;
+}
+
+function getStickers() {
+    return ['💘', '💤', '⛔', '😀', '😁', '🤣', '😅', '😆', '🥰', '😍', '😎', '😋', '😉', '🙄', '😛', '😪', '🤐', '🤑', '😖', '😤', '🤯', '🥵', '🥶', '😭', '🤡', '😡', '🥳', '😈', '👹', '💀', '😺', '👾', '👽', '👻', '☠', '🤖', '🙉', '🙈', '🙊', '🐸', '🐼', '🐨', '🦍', '🦓', '🐷', '🦝', '🐳', '🐬', '🐟', '🐙', '🦀', '🦅', '🦚', '🐞', '🦇', '👀', '👁', '👄', '🙏', '🎈', '🎉', '🥽', '👓', '🕶', '🩲', '💍', '🎧', '🔪', '💣', '🥙', '🍕', '🍔', '🍟', '🌭', '🥨', '☕', '🍉', '🍅', '🍓', '🍒', '🍑', '🥦', '🍎', '🥑', '🌶', '🍄', '🌲', '🥕', '☀', '🌙', '⚡', '☔', '🌈'];
 }
 

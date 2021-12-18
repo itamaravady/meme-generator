@@ -7,8 +7,9 @@ function initSavedMemeController() {
 }
 
 
-function goToSavedMemes() {
+function onGoToSavedMemes() {
     initSavedMemeController();
+    document.querySelector('.share-container').style.display = "none";
     hideSection('editor-container');
     hideSection('gallery');
     showSection('saved-memes');
@@ -22,17 +23,27 @@ function renderSavedMemes() {
     const strHtmls = memes.map((meme) => {
         return `
         <div class="image">
-                 <img src="${meme.img}" onclick="showSavedMeme('${meme.id}')">
+                 <img src="${meme.img}" onclick="onOpenSavedMeme('${meme.id}')">
          </div>
         `
     });
     document.querySelector('.memes-container').innerHTML = strHtmls.join('');
 }
 
-function showSavedMeme(memeId) {
-    //TODO - show meme modal with facebook button
+function onOpenModal(strHTML) {
+    const elmodal = document.querySelector('.modal');
+    elmodal.innerHTML = strHTML;
+    elmodal.classList.add('open-modal');
+    document.body.classList.add('menu-open');
 
-    console.log('memeId:', memeId);
 }
 
-//TODO selete meme
+function onOpenSavedMeme(memeId) {
+    var meme = getMemeById(memeId);
+    var strHtml = `
+    ${meme.facebookBtn}
+    <img src="${meme.img}">
+    `
+
+    onOpenModal(strHtml)
+}

@@ -17,18 +17,15 @@
         <nav class="main-nav">
             <ul class="flex space-between clean-list">
                 <li onclick="goToGallery()" class="btn">Gallery</li>
-                <li onclick="goToSavedMemes()" class="btn">Memes</li>
-                <li class="btn">about</li>
+                <li onclick="onGoToSavedMemes()" class="btn">Memes</li>
+                <li class="btn" onclick="onOpenAbout()">about</li>
             </ul>
         </nav>
         <button class="btn btn-menu" onclick="toggleMenu()">☰</button>
     </header>
-    <section class="gallery main-layout open">
-        <input list="search-values" onchange="onFilterBy(this)">
+    <section class="gallery main-layout open flex">
+        <input class="search-list" list="search-values" onchange="onFilterBy(this)" placeholder="Search">
         <datalist class="search" id="search-values">
-            <!-- <option value="funny">
-            <option value="political"> -->
-
         </datalist>
         <section class="images-container grid"></section>
     </section>
@@ -44,16 +41,16 @@
                 <input type="text" name="txt">
 
                 <section class="line-controls">
-                    <button class=" btn btn-text move-line" onclick="onSetCurrLine()"></button>
+                    <button class=" btn btn-text move-line" onclick="onSetCurrSelection()"></button>
                     <button class="btn btn-text add-line" onclick="onAddLine()"></button>
-                    <button class="btn btn-text delete-line" onclick="onRemoveLine()"></button>
+                    <button class="btn btn-text delete-line" onclick="onRemoveElement()"></button>
                 </section>
 
                 <section class="text-controls grid-text-controls">
                     <button name="size" value="2" class="btn btn-text increase-font-weight"
-                        onclick="onSetLineFontSize(this)"></button>
+                        onclick="onSetFontSize(this)"></button>
                     <button name="size" value="-2" class="btn btn-text decrease-font-weight"
-                        onclick="onSetLineFontSize(this)"></button>
+                        onclick="onSetFontSize(this)"></button>
                     <button class="btn btn-text align-left" onclick="onAlignLine('left')"></button>
                     <button class="btn btn-text align-center" onclick="onAlignLine('center')"></button>
                     <button class="btn btn-text align-right" onclick="onAlignLine('right')"></button>
@@ -68,17 +65,30 @@
                             name="fill" type="color" onchange="onSetMemeContent(this)"></label>
 
                 </section>
-                <section class="file-actions flex">
-                    <button class="btn btn-save" onclick="onSaveMeme()">Save</button>
-                    <a class="btn btn-download" onclick="onDownloadMeme(this)" download="my-meme.jpg">
+                <section class="stickers-container">
+                    <ul class="clean-list flex space-around">
+                        <li class="btn-stickers" onclick="navStickers(-1)">
+                            < </li>
+                        <li onclick="onAddSticker(this)"></li>
+                        <li onclick="onAddSticker(this)"></li>
+                        <li onclick="onAddSticker(this)"></li>
+                        <li onclick="onAddSticker(this)"></li>
+                        <li onclick="onAddSticker(this)"></li>
+                        <li class="btn-stickers" onclick="navStickers(1)">></li>
+                    </ul>
+                </section>
+                <section class=" file-actions flex">
+                    <button class="btn btn-save open" onclick="onSaveMeme()">Save</button>
+                    <button class="btn btn-goto-memes" onclick="onGoToSavedMemes()">Go to Memes</button>
+                    <a class="btn btn-download clean-anchor open" onclick="onDownloadMeme(this)" download="my-meme.jpg">
                         Download
                     </a>
-                    <button class=" btn btn-share" onclick="onShareMeme()">Share</button>
+                    <div class="share-container"></div>
                 </section>
-                <button class=" btn btn-share btn-share-ready"></button>
             </section>
         </section>
     </div>
+    <div class="modal"></div>
 
 
     <script src="js/services/storage.sevice.js"></script>
