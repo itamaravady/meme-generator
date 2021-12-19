@@ -380,7 +380,7 @@ body.menu-open .main-screen {
 }
 
 .modal {
-    color: white;
+    color: rgb(51, 51, 51);
     padding: 10px;
     border-radius: 1rem;
     background-color: #ffffff;
@@ -390,6 +390,7 @@ body.menu-open .main-screen {
     transform: translate(-50%, -50%);
     gap: 10px;
 }
+
 
 
 
