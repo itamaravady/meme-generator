@@ -1,30 +1,22 @@
 'use strict'
-var gMoveCounter = 0;
 var gElCanvas;
 var gCtx;
+
 var gAlignXCoord = {};
 var gStartPos = {};
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 var gStickersNavIdx = 0;
 
 
-function initMemeController() {
+function initEditor() {
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d');
     addListeners();
-    hideButton('btn-goto-memes');
-    hideSection('share-container');
-    showButton('btn-save');
+    document.querySelector('.share-container').innerText = ' ';
     renderMeme();
     renderEditorStickers();
 }
 
-function goToEditor() {
-    initMemeController();
-    hideSection('gallery');
-    hideSection('saved-memes');
-    showSection('editor-container');
-}
 
 function getCanvasSize() {
     var canvasSize = { width: gElCanvas.width, height: gElCanvas.height };
@@ -32,8 +24,7 @@ function getCanvasSize() {
 }
 
 //renders
-function renderMeme() {
-    //create and load new image
+function renderMeme(isShareSave = false) {
     var img = new Image();
     const imgUrl = getImgUrl();
     img.src = imgUrl;
@@ -43,7 +34,7 @@ function renderMeme() {
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
 
         //when image loads continure rendering meme content on canvas
-        renderMemeContent();
+        renderMemeContent(isShareSave);
         renderEditorControls();
     };
 }
@@ -69,30 +60,23 @@ function navStickers(navDelta) {
 }
 
 
-function onAddSticker(elStickerList) {
-    const line = elStickerList.innerText;
-    const size = 60;
-    gCtx.txtFont = `${size}px impact`
-    const width = 60;
-    addSticker(line, width, size);
+function onAddSticker(elSticker) {
+    addSticker(elSticker.innerText);
     renderMeme();
 }
 
 
-
-function renderMemeContent() {
+function renderMemeContent(isShareSave) {
     const meme = getMeme()
-    renderMemeLines(meme);
-    renderMemeStickers(meme);
-}
-
-function renderMemeLines(meme) {
+    //render meme lines
     const lines = meme.lines;
-    lines.forEach((line, idx) => drawTxtLine(line, idx));
-}
-function renderMemeStickers(meme) {
+    lines.forEach((line, idx, arr) => drawTxtLine(line, idx, isShareSave, arr, meme));
+
+    //render meme stickers
     const stickers = meme.stickers;
-    stickers.forEach((sticker, idx) => drawSticker(sticker, idx));
+    stickers.forEach((sticker, idx, arr) => {
+        drawSticker(sticker, idx, isShareSave, arr)
+    });
 }
 
 
@@ -111,17 +95,18 @@ function renderEditorControls() {
 
 function onSaveMeme() {
     renderMeme(true);
-    //save and upload meme
-    saveMeme(gElCanvas, generateShareBtn);
+    // saveMeme(gElCanvas);
+}
+
+function onShareMeme() {
+    const imgDataUrl = gElCanvas.toDataURL("image/jpeg");
+    uploadImg(imgDataUrl, 'share-container');
 }
 
 function generateShareBtn(savedMeme) {
     var elFacebookBtn = savedMeme.facebookBtn;
     const elShareContainer = document.querySelector('.share-container');
     elShareContainer.innerHTML = elFacebookBtn;
-    showButton('btn-goto-memes');
-    document.querySelector('.share-container').style.display = "block";
-    hideButton('btn-save');
 }
 
 function onDownloadMeme(elLink) {
@@ -161,10 +146,9 @@ function addTouchListeners() {
 function onDown(ev) {
     const pos = getEvPos(ev)
     var clickedElement = getClickedCanvasElement(pos);
-    if (clickedElement === undefined) return;
-
+    if (!clickedElement) return;
     ev.preventDefault();
-    setCurrSelection(clickedElement.idx, clickedElement.type);
+    setSelectedElement(clickedElement.idx, clickedElement.type);
     setElementDrag(clickedElement.element, true);
     gStartPos = pos;
     document.body.style.cursor = 'grabbing'
@@ -174,12 +158,11 @@ function onDown(ev) {
 function onMove(ev) {
     const element = getCurrElement();
     if (!element || !element.isDrag) return
-    ev.preventDefault();
+    // ev.preventDefault();
     const pos = getEvPos(ev)
     const dx = pos.x - gStartPos.x
     const dy = pos.y - gStartPos.y
-    console.log('onmove:', ++gMoveCounter);
-    onMoveElement(dx, dy);
+    moveElement(dx, dy);
     gStartPos = pos;
     renderMeme();
 }
@@ -202,7 +185,6 @@ function resizeCanvas() {
     gElCanvas.width = elContainer.offsetWidth;
     gElCanvas.height = elContainer.offsetHeight;
 
-    //set coords for align text line
     gAlignXCoord = {
         xLeft: 0.04 * gElCanvas.width,
         xCenter: gElCanvas.width / 2,
@@ -211,7 +193,7 @@ function resizeCanvas() {
 }
 
 
-function drawTxtLine(line, idx) {
+function drawTxtLine(line, idx, isShareSave, arr, meme) {
     var { x, y } = line.position;
     const txtFont = line.font;
     const txtSize = line.size;
@@ -223,12 +205,13 @@ function drawTxtLine(line, idx) {
     gCtx.fillText(line.txt, x, y);
     gCtx.strokeText(line.txt, x, y);
     gCtx.closePath();
-
-    if (isCurrElement(idx, 'lines')) {
+    if (isShareSave && arr.length - 1 === idx && !meme.stickers.length) saveMeme(gElCanvas);
+    if (isCurrElement(idx, 'lines') && !isShareSave) {
         var txtWidth = getTextWidth(line.txt);
-        x = line.selectionPos.x
-        y = line.selectionPos.y
+        x = line.position.x
+        y = line.position.y
         gCtx.beginPath();
+
         drawRect(x - 0.02 * txtWidth, y + 0.2 * txtSize, txtWidth + 0.04 * txtWidth, -txtSize - 0.1 * txtSize);
         gCtx.closePath();
     }
@@ -254,21 +237,22 @@ function getAlignCoords(line) {
 }
 
 
-function drawSticker(sticker, idx) {
+function drawSticker(sticker, idx, isShareSave, arr) {
     var { x, y } = sticker.position;
     var txtSticker = sticker.sticker;
     const txtSize = sticker.size;
     gCtx.beginPath();
     gCtx.font = `${txtSize}px impact`;
-    // gCtx.textAlign = 'center';
     gCtx.fillText(txtSticker, x, y);
     gCtx.closePath();
-    if (isCurrElement(idx, 'stickers')) {
+    console.log('arr length', arr.length)
+    if (isShareSave && arr.length - 1 === idx) saveMeme(gElCanvas);
+    if (isCurrElement(idx, 'stickers') && !isShareSave) {
         var stickerWidth = sticker.width;
-        x = sticker.selectionPos.x
-        y = sticker.selectionPos.y
+        x = sticker.position.x + sticker.position.x * 0.04
+        y = sticker.position.y + sticker.position.y * 0.05
         gCtx.beginPath();
-        drawRect(x - 0.02 * stickerWidth, y + 0.2 * txtSize, stickerWidth + 0.04 * stickerWidth, -txtSize - 0.1 * txtSize);
+        drawRect(x, y, stickerWidth + 0.1 * stickerWidth, -txtSize - 0.1 * txtSize);
         gCtx.closePath();
     }
 
@@ -280,8 +264,8 @@ function drawRect(x, y, sizeX, sizeY) {
     gCtx.beginPath();
     gCtx.rect(x, y, sizeX, sizeY);
     gCtx.setLineDash([8, 8]);
-    gCtx.lineWidth = 2.5;
-    gCtx.strokeStyle = 'white';
+    gCtx.lineWidth = 5;
+    gCtx.strokeStyle = '#fe6e20';
     gCtx.stroke();
     gCtx.closePath();
     gCtx.setLineDash([]);
@@ -302,16 +286,10 @@ function onAddLine() {
 }
 
 
-
-function onMoveElement(dx, dy) {
-    moveElement(dx, dy);
-}
-
-
 //on change content
 
 function onSetCurrSelection() {
-    setCurrSelection();
+    setSelectedElement();
     renderMeme();
 }
 
@@ -319,10 +297,7 @@ function onSetMemeContent(elInput) {
     const meme = getMeme();
     if (!meme.lines.length) return;
     setMemeContent(elInput.name, elInput.value);
-    // if (elInput.name === 'txt') {
-    //     var line = getCurrElement();
-    //     alignLine(line.align);
-    // }
+
     renderMeme();
 }
 

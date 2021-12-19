@@ -2,27 +2,20 @@
 
 var gMemeCanvases = []
 
-function initSavedMemeController() {
-    renderSavedMemes()
+function initSavedMemes() {
+    renderSavedMemes();
+    navToSection('saved-memes');
 }
 
-
-function onGoToSavedMemes() {
-    initSavedMemeController();
-    document.querySelector('.share-container').style.display = "none";
-    hideSection('editor-container');
-    hideSection('gallery');
-    showSection('saved-memes');
-}
 
 function renderSavedMemes() {
-    const storageKey = getStorageKey();
-    const memes = loadFromStorage(storageKey);
+    const memes = getSavedMemes();
     if (!memes || !memes.length) return;
     //render memes
     const strHtmls = memes.map((meme) => {
         return `
         <div class="image">
+        <button class="btn-remove-meme" onclick="onRemoveMeme('${meme.id}')">X</button>
                  <img src="${meme.img}" onclick="onOpenSavedMeme('${meme.id}')">
          </div>
         `
@@ -30,20 +23,17 @@ function renderSavedMemes() {
     document.querySelector('.memes-container').innerHTML = strHtmls.join('');
 }
 
-function onOpenModal(strHTML) {
-    const elmodal = document.querySelector('.modal');
-    elmodal.innerHTML = strHTML;
-    elmodal.classList.add('open-modal');
-    document.body.classList.add('menu-open');
-
-}
-
 function onOpenSavedMeme(memeId) {
     var meme = getMemeById(memeId);
-    var strHtml = `
-    ${meme.facebookBtn}
-    <img src="${meme.img}">
-    `
+    uploadImg(meme.img, 'modal-share-container');
+    const elModal = document.querySelector('.modal-saved-meme');
+    const elImg = elModal.querySelector('img');
+    elImg.src = meme.img;
+    elModal.classList.add('open-modal');
+    document.body.classList.add('menu-open');
+}
 
-    onOpenModal(strHtml)
+function onRemoveMeme(memeId) {
+    removeMeme(memeId);
+    renderSavedMemes();
 }

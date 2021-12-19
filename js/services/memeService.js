@@ -3,9 +3,9 @@
 //globals
 var gNextId = 100;
 
-
 var gMeme;
 const MEME_STORAGE_KEY = 'memeDB';
+var gSavedMemes = loadFromStorage(MEME_STORAGE_KEY);
 const gDeletedLines = {
     top: false,
     bot: false,
@@ -18,22 +18,20 @@ function getStorageKey() {
 
 //meme
 
-function getMemeDefault(imgId) {
+function createMeme(imgId) {
     return {
         selectedImgId: imgId,
         selectionIdx: 0,
         selectedType: 'lines',
-
-
         lines: [
             {
-                txt: 'Let the fun begin',
+                txt: 'Text goes here',
                 position: { x: 20, y: 60 },
-                selectionPos: { x: 20, y: 60 },
+                // selectionPos: { x: 20, y: 60 },
                 isDrag: false,
                 order: 'top',
                 size: 50,
-                width: 400,
+                width: 300,
                 lineWidth: 2,
                 font: 'impact',
                 align: 'left',
@@ -41,13 +39,13 @@ function getMemeDefault(imgId) {
                 stroke: '#000000',
             },
             {
-                txt: 'or dont...',
+                txt: 'And here...',
                 position: { x: 20, y: 380 },
-                selectionPos: { x: 20, y: 380 },
+                // selectionPos: { x: 20, y: 380 },
                 isDrag: false,
                 order: 'bot',
                 size: 50,
-                width: 400,
+                width: 215,
                 lineWidth: 2,
                 font: 'impact',
                 align: 'left',
@@ -64,12 +62,32 @@ function getMeme() {
     return gMeme;
 }
 
+function getSavedMemes() {
+    return gSavedMemes;
+}
 
 
-function saveMeme(canvas, callback) {
-    const savedMemes = loadFromStorage(MEME_STORAGE_KEY);
-    uploadImg(canvas, savedMemes, callback);
-    // return savedMemes;
+function saveMeme(canvas) {
+    console.log('saving');
+    gSavedMemes
+    const imgDataUrl = canvas.toDataURL("image/jpeg");
+    var newMeme = {
+        id: makeId(),
+        img: imgDataUrl,
+    }
+
+    if (!gSavedMemes || !gSavedMemes.length) saveToStorage(getStorageKey(), [newMeme]);
+    else {
+        gSavedMemes.push(newMeme);
+        saveToStorage(getStorageKey(), gSavedMemes);
+    }
+    document.querySelector('.share-container').innerText = 'Meme saved!'
+}
+
+function removeMeme(memeId) {
+    const memeIdx = getMemeIdxById(memeId)
+    gSavedMemes.splice(memeIdx, 1);
+    saveToStorage(getStorageKey(), gSavedMemes);
 }
 
 function getCurrElement() {
@@ -87,7 +105,7 @@ function getSelectedElementType() {
 
 
 function setImg(imgId) {
-    gMeme = getMemeDefault(imgId);
+    gMeme = createMeme(imgId);
 }
 
 
@@ -106,7 +124,7 @@ function _getImgById(id) {
 //txt
 
 function addLine(line, width, size) {
-    var textSize = getMemeDefault(100).lines[0].size;
+    var textSize = createMeme(100).lines[0].size;
     const canvasDim = getCanvasSize();
     var y;
     var lineOrder;
@@ -132,7 +150,7 @@ function addLine(line, width, size) {
     var newLine = {
         txt: line,
         position: { x: 20, y },
-        selectionPos: { x: 20, y },
+        // selectionPos: { x: 20, y },
         isDrag: false,
         order: lineOrder,
         size,
@@ -145,7 +163,7 @@ function addLine(line, width, size) {
     };
     gMeme.lines.push(newLine);
     const newLineIdx = gMeme.lines.length - 1;
-    setCurrSelection(newLineIdx, 'lines');
+    setSelectedElement(newLineIdx, 'lines');
 }
 
 
@@ -161,7 +179,7 @@ function removeElement(type) {
     }
 }
 
-function setCurrSelection(chosenSelectionIdx, type = gMeme.selectedType) {
+function setSelectedElement(chosenSelectionIdx, type = gMeme.selectedType) {
     if (chosenSelectionIdx === undefined) {
         var selectionIdx = ++gMeme.selectionIdx;
         gMeme.selectionIdx = (selectionIdx >= gMeme[type].length) ? 0 : selectionIdx;
@@ -176,24 +194,23 @@ function setCurrSelection(chosenSelectionIdx, type = gMeme.selectedType) {
 
 function isCurrElement(idx, type) {
     const currSelectedType = getSelectedElementType();
-    console.log();
     return (gMeme.selectionIdx === idx && currSelectedType === type);
 }
 
 
-function addSticker(stickerStr, width, size) {
+function addSticker(stickerStr) {
     const canvasDim = getCanvasSize();
     const sticker = {
         sticker: stickerStr,
         position: { x: (canvasDim.width / 2 - 15), y: (canvasDim.height / 2 + 5) },
-        selectionPos: { x: (canvasDim.width / 2 - 5), y: (canvasDim.height / 2 + 5) },
-        size,
-        width,
+        // selectionPos: { x: (canvasDim.width / 2 - 5), y: (canvasDim.height / 2 + 5) },
+        size: 60,
+        width: 60,
         isDrag: false,
     }
     gMeme.stickers.push(sticker);
-    const newStickerIdx = gMeme.stickers.length - 1;
-    setCurrSelection(newStickerIdx, 'stickers');
+    const selectedIdx = gMeme.stickers.length - 1;
+    setSelectedElement(selectedIdx, 'stickers');
 }
 
 
@@ -208,6 +225,10 @@ function setMemeContent(inputName, inputValue) {
 function getMemeById(memeId) {
     var memes = loadFromStorage(MEME_STORAGE_KEY);
     return memes.find((meme) => meme.id === memeId)
+}
+function getMemeIdxById(memeId) {
+    var memes = loadFromStorage(MEME_STORAGE_KEY);
+    return memes.findIndex((meme) => meme.id === memeId)
 }
 
 
@@ -231,7 +252,7 @@ function alignLine(alignSide) {
     var pos = getAlignCoords(line);
 
     line.position = pos;
-    line.selectionPos = line.position;
+    // line.selectionPos = line.position;
 }
 
 function getClickedCanvasElement(clickedPos) {
@@ -266,11 +287,9 @@ function setElementDrag(element, isDrag) {
 
 function moveElement(dx, dy) {
     const element = getCurrElement();
-    console.log('element X:', element.position.x,
-        'element Y:', element.position.y);
     element.position.x += dx;
     element.position.y += dy;
-    //move selection rect
-    element.selectionPos.x += dx;
-    element.selectionPos.y += dy;
+    // //move selection rect
+    // element.selectionPos.x += dx;
+    // element.selectionPos.y += dy;
 }

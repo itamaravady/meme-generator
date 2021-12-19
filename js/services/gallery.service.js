@@ -28,7 +28,6 @@ function getSearchKies() {
 
 
 function getImgs() {
-    console.log(gFilterBy);
     if (gFilterBy === '') return gImgs;
     var filteredImgs = gImgs.filter((img) => {
         return img.keywords.find((keyword) => gFilterBy === keyword);

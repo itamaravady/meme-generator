@@ -9,21 +9,21 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body onload="init()">
+<body onload="initGallery()">
     <div class="main-screen" onclick="toggleMenu()"></div>
 
     <header class="flex space-between center-items">
         <div class="logo"><img src="img/LOGO/LOGO.png" alt=""></div>
         <nav class="main-nav">
             <ul class="flex space-between clean-list">
-                <li onclick="goToGallery()" class="btn">Gallery</li>
-                <li onclick="onGoToSavedMemes()" class="btn">Memes</li>
+                <li onclick="initGallery()" class="btn">Gallery</li>
+                <li onclick="initSavedMemes();" class="btn">Memes</li>
                 <li class="btn" onclick="onOpenAbout()">about</li>
             </ul>
         </nav>
         <button class="btn btn-menu" onclick="toggleMenu()">☰</button>
     </header>
-    <section class="gallery main-layout open flex">
+    <section class="gallery main-layout flex-section">
         <input class="search-list" list="search-values" onchange="onFilterBy(this)" placeholder="Search">
         <datalist class="search" id="search-values">
         </datalist>
@@ -32,74 +32,84 @@
     <section class="saved-memes main-layout">
         <section class="memes-container grid">No Memes Yet :/</section>
     </section>
-    <div class="editor-container">
-        <section class="editor space-around center-items">
-            <div class="canvas-container">
-                <canvas width="500" height="500"></canvas>
-            </div>
-            <section class="editor-controls">
-                <input type="text" name="txt">
+    <section class="editor flex-section space-around center-items">
+        <div class="canvas-container">
+            <canvas width="500" height="500"></canvas>
+        </div>
+        <section class="editor-controls flex flex-column">
+            <input type="text" name="txt">
 
-                <section class="line-controls">
-                    <button class=" btn btn-text move-line" onclick="onSetCurrSelection()"></button>
-                    <button class="btn btn-text add-line" onclick="onAddLine()"></button>
-                    <button class="btn btn-text delete-line" onclick="onRemoveElement()"></button>
-                </section>
-
-                <section class="text-controls grid-text-controls">
-                    <button name="size" value="2" class="btn btn-text increase-font-weight"
-                        onclick="onSetFontSize(this)"></button>
-                    <button name="size" value="-2" class="btn btn-text decrease-font-weight"
-                        onclick="onSetFontSize(this)"></button>
-                    <button class="btn btn-text align-left" onclick="onAlignLine('left')"></button>
-                    <button class="btn btn-text align-center" onclick="onAlignLine('center')"></button>
-                    <button class="btn btn-text align-right" onclick="onAlignLine('right')"></button>
-                    <select name="font" class="font-style" onchange="onSetMemeContent(this)">
-                        <option value="impact">IMPACT</option>
-                        <option value="poppins">poppins</option>
-                    </select>
-                    <label class="btn stroke-label" for="stroke-input"><input id="stroke-input"
-                            class="btn btn-text stroke" name="stroke" type="color"
-                            onchange="onSetMemeContent(this)"></label>
-                    <label class="btn fill-label" for="fill-input"><input id="fill-input" class="btn btn-text fill"
-                            name="fill" type="color" onchange="onSetMemeContent(this)"></label>
-
-                </section>
-                <section class="stickers-container">
-                    <ul class="clean-list flex space-around">
-                        <li class="btn-stickers" onclick="navStickers(-1)">
-                            < </li>
-                        <li onclick="onAddSticker(this)"></li>
-                        <li onclick="onAddSticker(this)"></li>
-                        <li onclick="onAddSticker(this)"></li>
-                        <li onclick="onAddSticker(this)"></li>
-                        <li onclick="onAddSticker(this)"></li>
-                        <li class="btn-stickers" onclick="navStickers(1)">></li>
-                    </ul>
-                </section>
-                <section class=" file-actions flex">
-                    <button class="btn btn-save show-btn" onclick="onSaveMeme()">Save</button>
-                    <button class="btn btn-goto-memes" onclick="onGoToSavedMemes()">Go to Memes</button>
-                    <a class="btn btn-download clean-anchor show-btn" onclick="onDownloadMeme(this)"
-                        download="my-meme.jpg">
-                        Download
-                    </a>
-                    <div class="share-container"></div>
-                </section>
+            <section class="line-controls">
+                <button class=" btn btn-text move-line" onclick="onSetCurrSelection()"></button>
+                <button class="btn btn-text add-line" onclick="onAddLine()"></button>
+                <button class="btn btn-text delete-line" onclick="onRemoveElement()"></button>
             </section>
+
+            <section class="text-controls grid-text-controls">
+                <button name="size" value="2" class="btn btn-text increase-font-weight"
+                    onclick="onSetFontSize(this)"></button>
+                <button name="size" value="-2" class="btn btn-text decrease-font-weight"
+                    onclick="onSetFontSize(this)"></button>
+                <button class="btn btn-text align-left" onclick="onAlignLine('left')"></button>
+                <button class="btn btn-text align-center" onclick="onAlignLine('center')"></button>
+                <button class="btn btn-text align-right" onclick="onAlignLine('right')"></button>
+                <select name="font" class="font-style" onchange="onSetMemeContent(this)">
+                    <option value="impact">IMPACT</option>
+                    <option value="poppins">poppins</option>
+                </select>
+                <label class="btn stroke-label" for="stroke-input"><input id="stroke-input" class="btn btn-text stroke"
+                        name="stroke" type="color" onchange="onSetMemeContent(this)"></label>
+                <label class="btn fill-label" for="fill-input"><input id="fill-input" class="btn btn-text fill"
+                        name="fill" type="color" onchange="onSetMemeContent(this)"></label>
+
+            </section>
+            <section class="stickers-container">
+                <ul class="clean-list flex space-around">
+                    <li class="btn-stickers" onclick="navStickers(-1)">
+                        < </li>
+                    <li onclick="onAddSticker(this)"></li>
+                    <li onclick="onAddSticker(this)"></li>
+                    <li onclick="onAddSticker(this)"></li>
+                    <li onclick="onAddSticker(this)"></li>
+                    <li onclick="onAddSticker(this)"></li>
+                    <li class="btn-stickers" onclick="navStickers(1)">></li>
+                </ul>
+            </section>
+            <section class=" file-actions flex">
+
+                <button class="btn btn-save" onclick="onSaveMeme()">Save</button>
+                <a class="btn btn-download clean-anchor" onclick="onDownloadMeme(this)" download="my-meme.jpg">
+                    Download
+                </a>
+                <button class="btn btn-share" onclick="onShareMeme()">Share</button>
+
+            </section>
+
+            <div class="share-container"></div>
+
         </section>
+    </section>
+
+    <div class="modal modal-about">
+        <h2>About</h2>
+        <p>This is a meme generator</p>
     </div>
-    <div class="modal"></div>
+    <div class="modal modal-saved-meme">
+        <div class="modal-share-container">
+        </div>
+        <img src="" alt="" />
+    </div>
 
 
     <script src="js/services/storage.sevice.js"></script>
     <script src="js/services/utill.service.js"></script>
+    <script src="js/services/upload-service.js"></script>
     <script src="js/services/memeService.js"></script>
     <script src="js/services/gallery.service.js"></script>
     <script src="js/controllers/galleryController.js"></script>
     <script src="js/controllers/memeController.js"></script>
     <script src="js/controllers/savedMeme.controller.js"></script>
-    <script src="js/main.js"></script>
+
 </body>
 
 </html>
